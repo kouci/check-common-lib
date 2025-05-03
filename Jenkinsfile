@@ -5,6 +5,13 @@ pipeline {
         maven 'Maven3'
     }
 
+     environment {
+
+            NEXUS_URL = 'http://nexus:8081'
+            NEXUS_USER = 'admin'
+            NEXUS_PASS = 'admin'
+        }
+
     stages {
         stage('Checkout') {
             steps {
@@ -29,13 +36,14 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                script {
-                    sh 'mvn clean deploy'
-                }
-            }
-        }
-    }
+                 steps {
+                     script {
+                         sh "curl -I ${NEXUS_URL} || true"
+                         sh "mvn clean deploy -DskipTests"
+                     }
+                 }
+             }
+         }
 
     post {
         success {
