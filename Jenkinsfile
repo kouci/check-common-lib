@@ -6,7 +6,6 @@ pipeline {
             steps {
                 checkout scm
                 script {
-
                     def GIT_COMMIT_HASH = sh(script: "git log -n 1 --pretty=format:'%H'", returnStdout: true).trim()
                     echo "Last Commit Hash: ${GIT_COMMIT_HASH}"
                 }
@@ -16,8 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-
-                    sh "'${MAVEN_HOME}/bin/mvn' clean install"
+                    sh 'mvn clean install'
                 }
             }
         }
@@ -25,8 +23,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-
-                    sh "'${MAVEN_HOME}/bin/mvn' test"
+                    sh 'mvn test'
                 }
             }
         }
@@ -37,7 +34,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "'${MAVEN_HOME}/bin/mvn' clean deploy"
+                    sh 'mvn clean deploy'
                 }
             }
         }
