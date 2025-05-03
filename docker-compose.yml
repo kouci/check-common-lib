@@ -10,12 +10,26 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
     environment:
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=fal
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    networks:
+      - jenkins-net
+
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    ports:
+      - "8081:8081"
+    volumes:
+      - nexus-data:/nexus-data
+    environment:
+      - INSTALL4J_ADD_VM_PARAMS=-Xms512m -Xmx1024m -XX:MaxDirectMemorySize=1024m
+    restart: unless-stopped
     networks:
       - jenkins-net
 
 volumes:
   jenkins_home:
+  nexus-data:
 
 networks:
   jenkins-net:
