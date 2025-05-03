@@ -4,15 +4,14 @@ pipeline {
         MAVEN_HOME = tool name: 'Maven 3', type: 'Tool'
     }
 
-    def GIT_COMMIT_HASH = ""
-
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
                 script {
-                    GIT_COMMIT_HASH = sh(script: "git log -n 1 --pretty=format:'%H'", returnStdout: true).trim()
 
+                    def GIT_COMMIT_HASH = sh(script: "git log -n 1 --pretty=format:'%H'", returnStdout: true).trim()
+                    echo "Last Commit Hash: ${GIT_COMMIT_HASH}"
                 }
             }
         }
@@ -41,7 +40,6 @@ pipeline {
             }
             steps {
                 script {
-
                     sh "'${MAVEN_HOME}/bin/mvn' clean deploy"
                 }
             }
