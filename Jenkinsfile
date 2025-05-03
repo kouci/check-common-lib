@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        MAVEN_HOME = tool name: 'Maven 3', type: 'Tool'
-    }
 
     stages {
         stage('Checkout') {
