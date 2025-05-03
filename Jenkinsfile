@@ -1,13 +1,14 @@
 pipeline {
     agent any
+
+    tools {
+        maven 'Maven3'
+    }
+
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
-                script {
-                    def GIT_COMMIT_HASH = sh(script: "git log -n 1 --pretty=format:'%H'", returnStdout: true).trim()
-                    echo "Last Commit Hash: ${GIT_COMMIT_HASH}"
-                }
             }
         }
 
