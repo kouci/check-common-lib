@@ -4,6 +4,7 @@ pipeline {
     tools {
         maven 'Maven3'
     }
+
     stages {
         stage('Checkout') {
             steps {
@@ -31,13 +32,14 @@ pipeline {
             }
         }
 
-       stage('Deploy') {
-           steps {
-               script {
-                   sh 'mvn clean deploy'
-               }
-           }
-       }
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'mvn clean deploy'
+                }
+            }
+        }
+    }
 
     post {
         success {
