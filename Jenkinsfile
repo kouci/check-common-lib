@@ -31,17 +31,13 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    sh 'mvn clean deploy'
-                }
-            }
-        }
-    }
+       stage('Deploy') {
+           steps {
+               script {
+                   sh 'mvn clean deploy'
+               }
+           }
+       }
 
     post {
         success {
