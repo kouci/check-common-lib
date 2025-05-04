@@ -28,13 +28,13 @@ pipeline {
             }
         }
 
-//         stage('Deploy') {
-//             steps {
-//                 script {
-//                     sh 'mvn clean deploy'
-//                 }
-//             }
-//         }
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'mvn clean deploy'
+                }
+            }
+        }
     }
 
     post {
