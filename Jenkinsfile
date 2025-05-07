@@ -31,7 +31,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                configFileProvider([configFile(fileId: 'ossrh-settings', variable: 'MAVEN_SETTINGS')]) {
+                configFileProvider([configFile(fileId: '82705a2a-6c49-4ba6-accb-bd65fc82a529', variable: 'MAVEN_SETTINGS')]) {
                     sh """
                         mvn clean deploy \
                           -s $MAVEN_SETTINGS \
