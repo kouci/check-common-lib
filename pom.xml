@@ -44,6 +44,15 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<lombok.version>1.18.30</lombok.version>
+		<maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+		<maven.javadoc.plugin.version>3.6.3</maven.javadoc.plugin.version>
+		<maven.source.plugin.version>3.2.1</maven.source.plugin.version>
+		<maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
+		<central.publishing.plugin.version>0.7.0</central.publishing.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -62,6 +71,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -73,29 +83,31 @@
 
 	<build>
 		<plugins>
+
 			<!-- Compilation -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version>
+				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+					<encoding>${maven.compiler.encoding}</encoding>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>1.18.30</version>
+							<version>${lombok.version}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 
-			<!-- Publication centrale Maven -->
+			<!-- Publication Maven Central -->
 			<plugin>
 				<groupId>org.sonatype.central</groupId>
 				<artifactId>central-publishing-maven-plugin</artifactId>
-				<version>0.7.0</version>
+				<version>${central.publishing.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<publishingServerId>ossrh</publishingServerId>
@@ -108,7 +120,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.6.3</version>
+				<version>${maven.javadoc.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -119,11 +131,11 @@
 				</executions>
 			</plugin>
 
-			<!-- Code source attaché -->
+			<!-- Attacher le code source -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.2.1</version>
+				<version>${maven.source.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -138,7 +150,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
+				<version>${maven.gpg.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -149,6 +161,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 
