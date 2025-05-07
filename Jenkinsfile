@@ -31,12 +31,13 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh """
-                    mvn clean deploy \
-                      -Dgpg.passphrase=$GPG_PASSPHRASE \
-                      -Dossrh.username=$OSSRH_USR \
-                      -Dossrh.password=$OSSRH_PSW
-                """
+                configFileProvider([configFile(fileId: 'ossrh-settings', variable: 'MAVEN_SETTINGS')]) {
+                    sh """
+                        mvn clean deploy \
+                          -s $MAVEN_SETTINGS \
+                          -Dgpg.passphrase=$GPG_PASSPHRASE
+                    """
+                }
             }
         }
     }
