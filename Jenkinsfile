@@ -5,6 +5,11 @@ pipeline {
         maven 'Maven3'
     }
 
+    environment {
+        OSSRH = credentials('ossrh')
+        GPG_PASSPHRASE = credentials('gpg-passphrase')
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -14,28 +19,26 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                    sh 'mvn clean install'
-                }
+                sh 'mvn clean install'
             }
         }
 
         stage('Test') {
             steps {
-                script {
-                    sh 'mvn test'
-                }
+                sh 'mvn test'
             }
         }
 
         stage('Deploy') {
             steps {
-                script {
-                    sh 'mvn clean deploy'
-                }
+                sh """
+                    mvn clean deploy \
+                      -Dgpg.passphrase=$GPG_PASSPHRASE \
+                      -Dossrh.username=$OSSRH_USR \
+                      -Dossrh.password=$OSSRH_PSW
+                """
             }
         }
-
     }
 
     post {
