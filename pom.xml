@@ -53,6 +53,7 @@
 		<maven.source.plugin.version>3.2.1</maven.source.plugin.version>
 		<maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
 		<central.publishing.plugin.version>0.7.0</central.publishing.plugin.version>
+		<gpg.skip>true</gpg.skip>
 	</properties>
 
 	<dependencies>
