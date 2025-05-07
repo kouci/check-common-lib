@@ -14,7 +14,7 @@
 
 	<groupId>io.github.kouci</groupId>
 	<artifactId>check-common-lib</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5</version>
 	<packaging>jar</packaging>
 	<name>check-common-lib</name>
 	<description>Common library for Spring Boot projects</description>
