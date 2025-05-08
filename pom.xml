@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -15,15 +14,16 @@
 	<groupId>io.github.kouci</groupId>
 	<artifactId>check-common-lib</artifactId>
 	<version>0.0.5</version>
-	<packaging>jar</packaging>
 	<name>check-common-lib</name>
 	<description>Common library for Spring Boot projects</description>
 	<url>https://github.com/kouci/check-common-lib</url>
+	<packaging>jar</packaging>
 
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
 		</license>
 	</licenses>
 
@@ -44,15 +44,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<lombok.version>1.18.30</lombok.version>
-		<maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
-		<maven.javadoc.plugin.version>3.6.3</maven.javadoc.plugin.version>
-		<maven.source.plugin.version>3.2.1</maven.source.plugin.version>
-		<maven.gpg.plugin.version>3.1.0</maven.gpg.plugin.version>
-		<central.publishing.plugin.version>0.7.0</central.publishing.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -72,7 +64,7 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
-			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -81,18 +73,23 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>gpg</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
-
-			<!-- Compilation -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
-					<encoding>${maven.compiler.encoding}</encoding>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
@@ -103,11 +100,10 @@
 				</configuration>
 			</plugin>
 
-			<!-- Publication Maven Central -->
 			<plugin>
 				<groupId>org.sonatype.central</groupId>
 				<artifactId>central-publishing-maven-plugin</artifactId>
-				<version>${central.publishing.plugin.version}</version>
+				<version>0.7.0</version>
 				<extensions>true</extensions>
 				<configuration>
 					<publishingServerId>ossrh</publishingServerId>
@@ -116,11 +112,10 @@
 				</configuration>
 			</plugin>
 
-			<!-- Documentation Javadoc -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven.javadoc.plugin.version}</version>
+				<version>3.6.3</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -131,11 +126,10 @@
 				</executions>
 			</plugin>
 
-			<!-- Attacher le code source -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>${maven.source.plugin.version}</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -146,11 +140,10 @@
 				</executions>
 			</plugin>
 
-			<!-- Signature GPG -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>${maven.gpg.plugin.version}</version>
+				<version>1.5</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -160,15 +153,7 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<gpgArguments>
-						<arg>--batch</arg>
-						<arg>--pinentry-mode</arg>
-						<arg>loopback</arg>
-					</gpgArguments>
-				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 
@@ -182,5 +167,4 @@
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-
 </project>
