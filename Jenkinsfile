@@ -29,6 +29,9 @@ pipeline {
             }
         }
 
+
+
+
       stage('Deploy') {
           steps {
               withCredentials([file(credentialsId: 'gpg-secret-key', variable: 'GPG_KEY')]) {
