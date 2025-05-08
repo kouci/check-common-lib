@@ -6,8 +6,8 @@ pipeline {
     }
 
     environment {
-        OSSRH_USERNAME = credentials('ossrh-username')
-        OSSRH_PASSWORD = credentials('ossrh-password')
+        // Utilisez le même ID que celui configuré dans Jenkins
+        OSSRH_CREDS = credentials('ossrh') // Doit contenir username et password
         GPG_PASSPHRASE = credentials('gpg-passphrase')
     }
 
@@ -18,54 +18,22 @@ pipeline {
             }
         }
 
-        stage('Configure Maven') {
-            steps {
-                // Crée un settings.xml temporaire avec les credentials OSSRH
-                sh '''
-                    cat > ${WORKSPACE}/settings.xml <<EOF
-                    <settings>
-                      <servers>
-                        <server>
-                          <id>ossrh</id>
-                          <username>${OSSRH_USERNAME}</username>
-                          <password>${OSSRH_PASSWORD}</password>
-                        </server>
-                      </servers>
-                    </settings>
-                    EOF
-                '''
-            }
-        }
-
         stage('Build and Deploy') {
             steps {
                 withCredentials([file(credentialsId: 'gpg-secret-key', variable: 'GPG_KEY')]) {
                     sh """
                         # Configuration GPG
-                        gpg --batch --import ${GPG_KEY}
+                        gpg --batch --import $GPG_KEY
                         export GPG_TTY=\$(tty)
 
-                        # Déploiement avec les settings personnalisés
-                        mvn -s ${WORKSPACE}/settings.xml clean deploy \
-                            -Dgpg.passphrase=${GPG_PASSPHRASE} \
-                            -Dossrh.username=${OSSRH_USERNAME} \
-                            -Dossrh.password=${OSSRH_PASSWORD}
+                        # Déploiement avec authentification
+                        mvn clean deploy \
+                            -Dgpg.passphrase=$GPG_PASSPHRASE \
+                            -Dossrh.username=${OSSRH_CREDS_USR} \
+                            -Dossrh.password=${OSSRH_CREDS_PSW}
                     """
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            // Nettoyage du fichier settings.xml temporaire
-            sh 'rm -f ${WORKSPACE}/settings.xml'
-        }
-        success {
-            echo "Pipeline completed successfully."
-        }
-        failure {
-            echo "Pipeline failed."
         }
     }
 }
