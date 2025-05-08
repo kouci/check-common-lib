@@ -17,20 +17,17 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'
-            }
-        }
+//         stage('Build') {
+//             steps {
+//                 sh 'mvn clean install'
+//             }
+//         }
 
         stage('Test') {
             steps {
                 sh 'mvn test'
             }
         }
-
-
-
 
       stage('Deploy') {
           steps {
