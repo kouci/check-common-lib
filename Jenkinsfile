@@ -17,11 +17,11 @@ pipeline {
             }
         }
 
-//         stage('Build') {
-//             steps {
-//                 sh 'mvn clean install'
-//             }
-//         }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
 
         stage('Test') {
             steps {
@@ -29,22 +29,17 @@ pipeline {
             }
         }
 
-      stage('Deploy') {
-          steps {
-              withCredentials([file(credentialsId: 'gpg-secret-key', variable: 'GPG_KEY')]) {
-                  configFileProvider([configFile(fileId: '82705a2a-6c49-4ba6-accb-bd65fc82a529', variable: 'MAVEN_SETTINGS')]) {
-                      sh """
-                          gpg --batch --import $GPG_KEY
-                          export GPG_TTY=\$(tty)
-                          mvn clean deploy \
-                            -s $MAVEN_SETTINGS \
-                            -Dgpg.passphrase=$GPG_PASSPHRASE
-                      """
-                  }
-              }
-          }
-      }
-
+        stage('Deploy') {
+            steps {
+                withCredentials([file(credentialsId: 'gpg-secret-key', variable: 'GPG_KEY')]) {
+                    sh """
+                        gpg --batch --import $GPG_KEY
+                        export GPG_TTY=\$(tty)
+                        mvn clean deploy -Dgpg.passphrase=$GPG_PASSPHRASE
+                    """
+                }
+            }
+        }
     }
 
     post {
